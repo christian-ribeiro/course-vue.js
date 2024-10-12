@@ -24,7 +24,7 @@ export default {
   },
   computed: {
     answers() {
-      var answers = this.incorrectAnswers;
+      var answers = [...this.incorrectAnswers];
       answers.push(this.correctAnswers);
 
       return answers;
