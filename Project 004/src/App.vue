@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h1>Teste</h1>
+    <h1 v-html="this.question"></h1>
 
-    <input type="radio" name="options" value="True" />
-    <label>True</label><br />
+    <input id="options_1" type="radio" name="options" value="True" />
+    <label for="options_1">True</label><br />
 
-    <input type="radio" name="options" value="False" />
-    <label>False</label><br />
+    <input id="options_2" type="radio" name="options" value="False" />
+    <label for="options_2">False</label><br />
 
     <button class="send" type="button">Send</button>
   </div>
@@ -15,10 +15,29 @@
 <script>
 export default {
   name: "App",
+  data() {
+    return {
+      question: undefined,
+      incorrectAnswers: undefined,
+      correctAnswers: undefined,
+    };
+  },
+  computed: {
+    answers() {
+      var answers = this.incorrectAnswers;
+      answers.push(this.correctAnswers);
+
+      return answers;
+    },
+  },
   created() {
     this.axios
-      .get("https://opentdb.com/api.php?amount=1&category=18&type=boolean")
+      .get("https://opentdb.com/api.php?amount=1&category=18")
       .then((response) => {
+        this.question = response.data.results[0].question;
+        this.incorrectAnswers = response.data.results[0].incorrect_answers;
+        this.correctAnswers = response.data.results[0].correct_answer;
+
         console.log(response.data);
       });
   },
