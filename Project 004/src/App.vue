@@ -1,14 +1,13 @@
 <template>
   <div>
-    <h1 v-html="this.question"></h1>
-
-    <input id="options_1" type="radio" name="options" value="True" />
-    <label for="options_1">True</label><br />
-
-    <input id="options_2" type="radio" name="options" value="False" />
-    <label for="options_2">False</label><br />
-
-    <button class="send" type="button">Send</button>
+    <template v-if="this.question">
+      <h1 v-html="this.question"></h1>
+      <template v-for="(answer, index) in this.answers" :key="index">
+        <input type="radio" name="options" value="answer" />
+        <label v-html="answer"></label><br />
+      </template>
+      <button class="send" type="button">Send</button>
+    </template>
   </div>
 </template>
 
@@ -26,7 +25,7 @@ export default {
     answers() {
       var answers = [...this.incorrectAnswers];
       answers.splice(
-        Math.round(Math.random()) * answers.length,
+        Math.round(Math.random() * answers.length),
         0,
         this.correctAnswers
       );
