@@ -40,6 +40,12 @@ let books = reactive([
     author: "Rhys Frake-Waterfield",
   },
 ]);
+
+function toggleIsRead(id) {
+  books.forEach((element) => {
+    if (element.id == id) element.isRead = !element.isRead;
+  });
+}
 </script>
 
 <template>
@@ -50,7 +56,7 @@ let books = reactive([
     </div>
 
     <div class="books-container">
-      <Books :books="books" />
+      <Books @toggleIsRead="toggleIsRead" :books="books" />
     </div>
   </div>
 </template>
