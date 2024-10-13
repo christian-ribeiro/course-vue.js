@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ScoreBoard />
+    <ScoreBoard :winCount="this.winCount" :loseCount="this.loseCount" />
     <template v-if="this.question">
       <h1 v-html="this.question"></h1>
       <template v-for="(answer, index) in this.answers" :key="index">
@@ -61,6 +61,8 @@ export default {
       correctAnswer: undefined,
       chosenAnswer: undefined,
       answerSubmitted: false,
+      winCount: 0,
+      loseCount: 0,
     };
   },
   computed: {
@@ -85,16 +87,12 @@ export default {
       this.answerSubmitted = true;
 
       if (this.chosenAnswer == this.correctAnswer) {
-        console.log("Correct");
+        this.winCount++;
       } else {
-        console.log("Incorrect");
+        this.loseCount++;
       }
     },
     getNewQuestion() {
-      this.answerSubmitted = false;
-      this.chosenAnswer = undefined;
-      this.question = undefined;
-
       try {
         this.axios
           .get("https://opentdb.com/api.php?amount=1&category=18")
@@ -102,9 +100,11 @@ export default {
             this.question = response.data.results[0].question;
             this.incorrectAnswers = response.data.results[0].incorrect_answers;
             this.correctAnswer = response.data.results[0].correct_answer;
-
-            console.log(response.data);
           });
+
+        this.answerSubmitted = false;
+        this.chosenAnswer = undefined;
+        this.question = undefined;
       } catch (err) {
         console.log(err);
       }
