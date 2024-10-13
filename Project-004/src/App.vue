@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ScoreBoard />
     <template v-if="this.question">
       <h1 v-html="this.question"></h1>
       <template v-for="(answer, index) in this.answers" :key="index">
@@ -25,11 +26,19 @@
     <section class="result" v-if="this.answerSubmitted">
       <h4
         v-if="this.chosenAnswer == this.correctAnswer"
-        v-html="'&#9989; Conglatulations, the answer ' + this.chosenAnswer + ' is correct.'"
+        v-html="
+          '&#9989; Conglatulations, the answer ' +
+          this.chosenAnswer +
+          ' is correct.'
+        "
       ></h4>
       <h4
         v-else
-        v-html="'&#10060; I´m sorry, you picket the wrong answer. The correct is ' + this.correctAnswer + '.'"
+        v-html="
+          '&#10060; I´m sorry, you picket the wrong answer. The correct is ' +
+          this.correctAnswer +
+          '.'
+        "
       ></h4>
       <button @click="this.getNewQuestion()" class="send" type="button">
         Next Question
@@ -39,8 +48,12 @@
 </template>
 
 <script>
+import ScoreBoard from "@/components/ScoreBoard.vue";
 export default {
   name: "App",
+  components: {
+    ScoreBoard,
+  },
   data() {
     return {
       question: undefined,
@@ -81,16 +94,20 @@ export default {
       this.answerSubmitted = false;
       this.chosenAnswer = undefined;
       this.question = undefined;
-      
-      this.axios
-        .get("https://opentdb.com/api.php?amount=1&category=18")
-        .then((response) => {
-          this.question = response.data.results[0].question;
-          this.incorrectAnswers = response.data.results[0].incorrect_answers;
-          this.correctAnswer = response.data.results[0].correct_answer;
 
-          console.log(response.data);
-        });
+      try {
+        this.axios
+          .get("https://opentdb.com/api.php?amount=1&category=18")
+          .then((response) => {
+            this.question = response.data.results[0].question;
+            this.incorrectAnswers = response.data.results[0].incorrect_answers;
+            this.correctAnswer = response.data.results[0].correct_answer;
+
+            console.log(response.data);
+          });
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
   created() {
