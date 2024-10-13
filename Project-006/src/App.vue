@@ -2,12 +2,16 @@
 import { ref } from "vue";
 
 let count = ref(0);
+
+function increment() {
+  count.value++;
+}
 </script>
 
 <template>
   <div>
     <h1>{{ count }}</h1>
-    <button @click="count++">Increment</button>
+    <button @click="increment">Increment</button>
   </div>
 </template>
 
