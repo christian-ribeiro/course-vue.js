@@ -19,7 +19,6 @@ export default createStore({
       state.products = products
     },
     addToBag(state, product) {
-      console.log(product)
       state.productsInBag.push(product)
     },
     removeFromBag(state, productId) {
@@ -30,7 +29,6 @@ export default createStore({
   actions: {
     loadProducts({ commit }) {
       axios.get("https://fakestoreapi.com/products").then((response) => {
-        console.log(response.data);
         commit('loadProducts', response.data)
       });
     },
