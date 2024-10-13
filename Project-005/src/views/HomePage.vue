@@ -23,19 +23,14 @@
 </template>
   
   <script>
+import { mapState } from "vuex";
+
 export default {
   name: "HomePage",
   data() {
     return {};
   },
-  computed: {
-    products() {
-      return this.$store.getters.loadProducts;
-    },
-    productsInBag() {
-      return this.$store.getters.loadProductsInBag;
-    },
-  },
+  computed: mapState(["products", "productsInBag"]),
   methods: {
     addToBag(product) {
       product.quantity = 1;
