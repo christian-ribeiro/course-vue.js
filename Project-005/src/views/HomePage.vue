@@ -5,8 +5,7 @@
         v-for="(product, index) in this.products"
         :key="index"
         class="product"
-        :class="{ inBag: isInBag(product) }"
-      >
+        :class="{ inBag: isInBag(product) }">
         <div
           class="product-image"
           :style="{ backgroundImage: 'url(' + product.image + ')' }"
