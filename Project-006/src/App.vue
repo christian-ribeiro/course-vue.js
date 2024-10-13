@@ -53,6 +53,8 @@ function toggleIsRead(id) {
 }
 
 function addBook(newBook) {
+  let nextId = Math.max(...books.map((el) => el.id)) + 1;
+  newBook.id = nextId;
   books.push(newBook);
   showAddBook.value = false;
 }
