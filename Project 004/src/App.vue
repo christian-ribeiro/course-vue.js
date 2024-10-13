@@ -3,10 +3,18 @@
     <template v-if="this.question">
       <h1 v-html="this.question"></h1>
       <template v-for="(answer, index) in this.answers" :key="index">
-        <input type="radio" name="options" value="answer" />
-        <label v-html="answer"></label><br />
+        <input
+          :id="index"
+          type="radio"
+          name="options"
+          :value="answer"
+          v-model="this.chosenAnswer"
+        />
+        <label :for="index" v-html="answer"></label><br />
       </template>
-      <button class="send" type="button">Send</button>
+      <button @click="this.submitAnswer()" class="send" type="button">
+        Send
+      </button>
     </template>
   </div>
 </template>
@@ -18,7 +26,8 @@ export default {
     return {
       question: undefined,
       incorrectAnswers: undefined,
-      correctAnswers: undefined,
+      correctAnswer: undefined,
+      chosenAnswer: undefined,
     };
   },
   computed: {
@@ -27,10 +36,23 @@ export default {
       answers.splice(
         Math.round(Math.random() * answers.length),
         0,
-        this.correctAnswers
+        this.correctAnswer
       );
 
       return answers;
+    },
+  },
+  methods: {
+    submitAnswer() {
+      if (!this.chosenAnswer) {
+        alert("Please, select a answer");
+        return;
+      }
+
+      if (this.chosenAnswer == this.correctAnswer)
+        alert("Correct");
+      else       
+       alert("Incorrect");
     },
   },
   created() {
@@ -39,7 +61,7 @@ export default {
       .then((response) => {
         this.question = response.data.results[0].question;
         this.incorrectAnswers = response.data.results[0].incorrect_answers;
-        this.correctAnswers = response.data.results[0].correct_answer;
+        this.correctAnswer = response.data.results[0].correct_answer;
 
         console.log(response.data);
       });
