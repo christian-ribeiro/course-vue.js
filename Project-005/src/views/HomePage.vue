@@ -12,7 +12,7 @@
         ></div>
         <h4 v-html="product.title"></h4>
         <p class="price">US$ {{ product.price.toFixed(2) }}</p>
-        <button>Add to bag</button>
+        <button @click="addToBag(product)">Add to bag</button>
       </div>
     </div>
   </div>
@@ -28,8 +28,16 @@ export default {
     products() {
       return this.$store.getters.loadProducts;
     },
+    productsInBag() {
+      return this.$store.getters.loadProductsInBag;
+    },
   },
-  methods: {},
+  methods: {
+    addToBag(product) {
+      product.quantity = 1;
+      this.$store.dispatch("addToBag", product);
+    },
+  },
 };
 </script>
   
